@@ -33,6 +33,41 @@ async function main() {
     console.log("Create result confirmation",  createResult.confirmation);
     const assetId = BigInt(createResult.confirmation.assetIndex!);
 
+    // ===== Enviar el ASA a Bob =====
+    try {
+        await algorand.send.assetTransfer({
+            sender: alice.addr,
+            receiver: bob.addr,
+            assetId,
+            amount: 1n,
+        })
+    } catch (error: any) {
+        console.warn("Transfer error", error.response.body.message);
+    }
+
+    // ===== Fondear a Bob =====
+    await algorand.send.payment({
+        sender: dispenser.addr,
+        receiver: bob.addr,
+        amount: algokit.algos(10),
+    });
+
+    // ===== Hacer Opt-in de Bob e intentar de nuevo =====
+    await algorand.send.assetOptIn({
+        sender: bob.addr,
+        assetId,
+    })
+
+    await algorand.send.assetTransfer({
+        sender: alice.addr,
+        receiver: bob.addr,
+        assetId,
+        amount: 1n,
+    })
+
+    console.log("Alice's Assets", await algorand.account.getAssetInformation(alice.addr, assetId));
+    console.log("Bob's Assets", await algorand.account.getAssetInformation(bob.addr, assetId));
+
 }
 
 main();
