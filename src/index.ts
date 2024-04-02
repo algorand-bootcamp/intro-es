@@ -68,6 +68,32 @@ async function main() {
     console.log("Alice's Assets", await algorand.account.getAssetInformation(alice.addr, assetId));
     console.log("Bob's Assets", await algorand.account.getAssetInformation(bob.addr, assetId));
 
+    // ==== Alice compra de regreso el ASA de Bob ====
+    await algorand.newGroup().addPayment({
+        sender: alice.addr,
+        receiver: bob.addr,
+        amount: algokit.algos(1),
+    }).addAssetTransfer({
+        sender: bob.addr,
+        receiver: alice.addr,
+        assetId,
+        amount: 1n,
+    }).execute()
+
+    console.log("Alice's Assets", await algorand.account.getAssetInformation(alice.addr, assetId));
+    console.log("Bob's Assets", await algorand.account.getAssetInformation(bob.addr, assetId));
+    console.log("Bob's Min Balance", (await algorand.account.getInformation(bob.addr)).minBalance);
+
+    // ==== Bob hace Close out al ASA ====
+    await algorand.send.assetTransfer({
+        sender: bob.addr,
+        receiver: alice.addr,
+        assetId,
+        amount: 0n,
+        closeAssetTo: alice.addr,
+    });
+
+    console.log("Bob's Min Balance", (await algorand.account.getInformation(bob.addr)).minBalance);
 }
 
 main();
