@@ -19,3 +19,7 @@ Todo el código del contenido estará en [src/index.ts](./src/index.ts). Puedes 
 ## Contenido completo
 
 En la rama main encontrarás el código base, sin embargo si quieres ver el código ya completo, puedes ir a la rama `contenido` en github y podrás ver el código finalizado, además de los commits ordenados: https://github.com/algorand-bootcamp/intro-es/blob/contenido/src/index.ts
+
+## Grabaciones
+- [Sesión 1: Intro a Algorand y el SDK](https://drive.google.com/file/d/12gNR7bGXpuOI3yLCiisn0LZTG_SarGDh/view?usp=drive_link)
+- [Sesión 2: Configuración del entorno local](https://drive.google.com/file/d/1ltq6WEy9mjhBrWivPq5Fp77N0HOJvkZt/view?usp=drive_link)
